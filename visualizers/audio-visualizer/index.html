@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+ 
+body {
+  margin: 0;
+  background: #222;
+  min-width: 960px;
+}
+ 
+rect {
+  fill: none;
+  pointer-events: all;
+}
+ 
+circle {
+  fill: none;
+  stroke-width: 2.5px;
+}
+ 
+</style>
+<head>
+    
+</head>
+<body>
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="./getAudio.js"></script>
+<script>
+ 
+ 
+const getOrbitCoor = (cx, cy, angle, radius) => {
+    const angleInRad = (angle / 360) * Math.PI
+    const x = cx + (Math.cos(angleInRad) * radius)
+    const y = cy + (Math.sin(angleInRad) * radius)
+    return [x, y]
+}
+ 
+var i = 0
+ 
+var frequencies = null
+ 
+var width = Math.max(960, innerWidth),
+    height = Math.max(500, innerHeight);
+ 
+ 
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+ 
+svg.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    //.on("ontouchstart" in document ? "touchmove" : "mousemove", particle);
+    setInterval(() => {
+      particle()
+      frequencies = getFrequencies()
+      if (frequencies) { 
+        for (var i = 0; i < frequencies.length; i++){
+          svg.insert('circle', 'rect')
+            .attr('cx', i * 100 + 100)
+            .attr('cy', 500)
+            .attr('r', frequencies[i])
+            .style("stroke", d3.hsl(frequencies[i] % 360 + 180, 1, .5))
+            .style("stroke-opacity", 1)
+            .transition()
+              .duration(1000)
+              .ease(Math.sqrt)
+              .attr("r", 1e-6)
+              .style("stroke-opacity", 1e-6)
+              .remove();
+        } 
+      }
+    }, 50)
+ 
+function particle() {
+  //var m = d3.mouse(this);
+  var m = [480, 250]
+  var orbit = getOrbitCoor(m[0], m[1], i * 10, 300)
+  console.log(i)
+ 
+  svg.insert("circle", "rect")
+      .attr("cx", m[0])
+      .attr("cy", m[1])
+      .attr("r", 1e-6)
+      .style("stroke", d3.hsl((i = (i + 1) % 360), 1, .5))
+      .style("stroke-opacity", 1)
+    .transition()
+      .duration(7000)
+      .ease(Math.sqrt)
+      .attr("r", 100)
+      .attr("cx", orbit[0])
+      .attr("cy", orbit[1])
+      .style("stroke-opacity", 1e-6)
+      .remove();
+ 
+  //d3.event.preventDefault();
+}
+ 
+</script>
+</body>
