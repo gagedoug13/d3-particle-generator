@@ -25,9 +25,11 @@ const getFrequencies = () => {
  
     analyser.getByteFrequencyData(dataArray)
     avgArray = []
-    for (var i = 0; i < 20; i++){
-        avgArray.push(dataArray.slice(i * 50, i * 50 + 50))
+    for (var i = 0; i < 200; i++){
+        
+        avgArray.push(dataArray.slice(i * 5, i * 5 + 5))
     }
+    console.log(dataArray)
  
     avgArray = avgArray.map(group => {
         var length = group.length
