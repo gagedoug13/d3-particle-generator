@@ -27,7 +27,7 @@ const getFrequencies = () => {
     avgArray = []
     for (var i = 0; i < 200; i++){
         
-        avgArray.push(dataArray.slice(i * 5, i * 5 + 5))
+        avgArray.push(dataArray.slice(i * 2, i * 2 + 5))
     }
     console.log(dataArray)
  
